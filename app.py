@@ -244,21 +244,72 @@ with prediction_tab:
         # =========================
         # INPUT DATAFRAME
         # =========================
+        # =========================
+# CREATE FULL FEATURE DATA
+# =========================
 
-        input_data = pd.DataFrame([[
-            amount,
-            transaction_hour,
-            transaction_day,
-            transaction_month,
-            transaction_weekday,
-            is_weekend,
-            night_transaction,
-            high_amount_flag,
-            rapid_transaction_flag,
-            amount_deviation,
-            amount_ratio,
-            rule_based_risk_score
-        ]], columns=[
+        input_dict = {
+        
+            'Amount': amount,
+        
+            'Transaction_Hour': transaction_hour,
+        
+            'Transaction_Day': transaction_day,
+        
+            'Transaction_Month': transaction_month,
+        
+            'Transaction_Weekday': transaction_weekday,
+        
+            'Is_Weekend': is_weekend,
+        
+            'Night_Transaction': night_transaction,
+        
+            'High_Amount_Flag': high_amount_flag,
+        
+            'Customer_Transaction_Count': 5,
+        
+            'Customer_Avg_Amount': amount * 0.8,
+        
+            'Customer_Max_Amount': amount * 1.5,
+        
+            'Customer_Min_Amount': amount * 0.3,
+        
+            'Amount_Deviation': amount_deviation,
+        
+            'Amount_Ratio_To_Avg': amount_ratio,
+        
+            'Customer_Std_Amount': amount * 0.2,
+        
+            'Customer_Zscore_Amount': 1.2,
+        
+            'Time_Difference': 30,
+        
+            'Rapid_Transaction_Flag': rapid_transaction_flag,
+        
+            'Daily_Transaction_Count': 8,
+        
+            'Rolling_Avg_Amount': amount * 0.9,
+        
+            'Rolling_Max_Amount': amount * 1.3,
+        
+            'Rule_Based_Risk_Score': rule_based_risk_score,
+        
+            'Transaction_Type_Encoded': 1
+        
+        }
+        
+        # =========================
+        # CREATE DATAFRAME
+        # =========================
+        
+        input_data = pd.DataFrame([input_dict])
+        
+        # =========================
+        # ENSURE EXACT FEATURE ORDER
+        # =========================
+        
+        expected_columns = [
+        
             'Amount',
             'Transaction_Hour',
             'Transaction_Day',
@@ -267,11 +318,25 @@ with prediction_tab:
             'Is_Weekend',
             'Night_Transaction',
             'High_Amount_Flag',
-            'Rapid_Transaction_Flag',
+            'Customer_Transaction_Count',
+            'Customer_Avg_Amount',
+            'Customer_Max_Amount',
+            'Customer_Min_Amount',
             'Amount_Deviation',
             'Amount_Ratio_To_Avg',
-            'Rule_Based_Risk_Score'
-        ])
+            'Customer_Std_Amount',
+            'Customer_Zscore_Amount',
+            'Time_Difference',
+            'Rapid_Transaction_Flag',
+            'Daily_Transaction_Count',
+            'Rolling_Avg_Amount',
+            'Rolling_Max_Amount',
+            'Rule_Based_Risk_Score',
+            'Transaction_Type_Encoded'
+        
+        ]
+        
+        input_data = input_data[expected_columns]
 
         # =========================
         # SCALE INPUT
