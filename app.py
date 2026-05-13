@@ -1,76 +1,5 @@
 
 
-# # import streamlit as st
-# # import pandas as pd
-# # import numpy as np
-# # import joblib
-
-# # # Load model and scaler
-# # model = joblib.load('fraud_xgb_model.pkl')
-# # scaler = joblib.load('fraud_scaler.pkl')
-
-# # st.title("Banking Fraud Detection System")
-
-# # st.write("Enter transaction details")
-
-# # # Inputs
-# # amount = st.number_input("Transaction Amount")
-
-# # transaction_hour = st.slider(
-# #     "Transaction Hour",
-# #     0,
-# #     23
-# # )
-
-# # high_amount_flag = st.selectbox(
-# #     "High Amount Flag",
-# #     [0,1]
-# # )
-
-# # night_transaction = st.selectbox(
-# #     "Night Transaction",
-# #     [0,1]
-# # )
-
-# # rapid_transaction = st.selectbox(
-# #     "Rapid Transaction",
-# #     [0,1]
-# # )
-
-# # # Prediction button
-# # if st.button("Predict Fraud"):
-
-# #     input_data = np.array([[
-# #         amount,
-# #         transaction_hour,
-# #         high_amount_flag,
-# #         night_transaction,
-# #         rapid_transaction
-# #     ]])
-
-# #     input_scaled = scaler.transform(input_data)
-
-# #     fraud_probability = model.predict_proba(
-# #         input_scaled
-# #     )[0][1]
-
-# #     st.write(
-# #         f"Fraud Probability: {fraud_probability:.4f}"
-# #     )
-
-# #     if fraud_probability >= 0.7:
-
-# #         st.error("High Risk Fraud Transaction")
-
-# #     elif fraud_probability >= 0.3:
-
-# #         st.warning("Medium Risk Transaction")
-
-# #     else:
-
-# #         st.success("Low Risk Transaction")
-
-
 
 # import streamlit as st
 # import pandas as pd
@@ -122,15 +51,15 @@
 #     "Fraud Threshold",
 #     0.0,
 #     1.0,
-#     0.30
+#     0.10
 # )
 
 # st.sidebar.markdown("---")
 
 # st.sidebar.write("### Risk Rules")
-# st.sidebar.write("- Low Risk : < 30%")
-# st.sidebar.write("- Medium Risk : 30% - 70%")
-# st.sidebar.write("- High Risk : > 70%")
+# st.sidebar.write("- Low Risk : 0% - 10%")
+# st.sidebar.write("- Medium Risk : 10% - 20%")
+# st.sidebar.write("- High Risk : > 20%")
 
 # # =========================
 # # TABS
@@ -242,74 +171,71 @@
 #     if st.button("🚨 Predict Fraud"):
 
 #         # =========================
-#         # INPUT DATAFRAME
+#         # CREATE FULL FEATURE DATA
 #         # =========================
-#         # =========================
-# # CREATE FULL FEATURE DATA
-# # =========================
 
 #         input_dict = {
-        
+
 #             'Amount': amount,
-        
+
 #             'Transaction_Hour': transaction_hour,
-        
+
 #             'Transaction_Day': transaction_day,
-        
+
 #             'Transaction_Month': transaction_month,
-        
+
 #             'Transaction_Weekday': transaction_weekday,
-        
+
 #             'Is_Weekend': is_weekend,
-        
+
 #             'Night_Transaction': night_transaction,
-        
+
 #             'High_Amount_Flag': high_amount_flag,
-        
+
 #             'Customer_Transaction_Count': 5,
-        
+
 #             'Customer_Avg_Amount': amount * 0.8,
-        
+
 #             'Customer_Max_Amount': amount * 1.5,
-        
+
 #             'Customer_Min_Amount': amount * 0.3,
-        
+
 #             'Amount_Deviation': amount_deviation,
-        
+
 #             'Amount_Ratio_To_Avg': amount_ratio,
-        
+
 #             'Customer_Std_Amount': amount * 0.2,
-        
+
 #             'Customer_Zscore_Amount': 1.2,
-        
+
 #             'Time_Difference': 30,
-        
+
 #             'Rapid_Transaction_Flag': rapid_transaction_flag,
-        
+
 #             'Daily_Transaction_Count': 8,
-        
+
 #             'Rolling_Avg_Amount': amount * 0.9,
-        
+
 #             'Rolling_Max_Amount': amount * 1.3,
-        
+
 #             'Rule_Based_Risk_Score': rule_based_risk_score,
-        
+
 #             'Transaction_Type_Encoded': 1
-        
+
 #         }
-        
+
 #         # =========================
 #         # CREATE DATAFRAME
 #         # =========================
-        
+
 #         input_data = pd.DataFrame([input_dict])
-        
+
 #         # =========================
 #         # ENSURE EXACT FEATURE ORDER
 #         # =========================
-        
+
 #         expected_columns = [
-        
+
 #             'Amount',
 #             'Transaction_Hour',
 #             'Transaction_Day',
@@ -333,9 +259,9 @@
 #             'Rolling_Max_Amount',
 #             'Rule_Based_Risk_Score',
 #             'Transaction_Type_Encoded'
-        
+
 #         ]
-        
+
 #         input_data = input_data[expected_columns]
 
 #         # =========================
@@ -356,17 +282,20 @@
 #         # RISK LEVEL
 #         # =========================
 
-#         if fraud_probability >= 0.70:
+#         if fraud_probability > 0.20:
+
 #             risk_level = "High Risk"
 #             monitoring_action = "Block Transaction"
 #             alert_message = "Immediate Investigation Required"
 
-#         elif fraud_probability >= 0.30:
+#         elif fraud_probability >= 0.10:
+
 #             risk_level = "Medium Risk"
 #             monitoring_action = "Send OTP Verification"
 #             alert_message = "Monitor Transaction"
 
 #         else:
+
 #             risk_level = "Low Risk"
 #             monitoring_action = "Allow Transaction"
 #             alert_message = "Normal Activity"
@@ -442,9 +371,9 @@
 #             gauge={
 #                 'axis': {'range': [0,100]},
 #                 'steps': [
-#                     {'range': [0,30], 'color': "lightgreen"},
-#                     {'range': [30,70], 'color': "yellow"},
-#                     {'range': [70,100], 'color': "red"}
+#                     {'range': [0,10], 'color': "lightgreen"},
+#                     {'range': [10,20], 'color': "yellow"},
+#                     {'range': [20,100], 'color': "red"}
 #                 ]
 #             }
 #         ))
@@ -459,25 +388,17 @@
 
 #     st.header("Fraud Analytics Dashboard")
 
-#     # =========================
-#     # SAMPLE DASHBOARD DATA
-#     # =========================
-
 #     np.random.seed(42)
 
 #     dashboard_data = pd.DataFrame({
 #         'Risk_Level': np.random.choice(
 #             ['Low Risk', 'Medium Risk', 'High Risk'],
 #             200,
-#             p=[0.7,0.2,0.1]
+#             p=[0.5,0.2,0.3]
 #         ),
 #         'Fraud_Probability': np.random.uniform(0,1,200),
 #         'Transaction_Amount': np.random.randint(100,50000,200)
 #     })
-
-#     # =========================
-#     # KPI CARDS
-#     # =========================
 
 #     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 
@@ -507,15 +428,7 @@
 
 #     st.markdown("---")
 
-#     # =========================
-#     # CHARTS
-#     # =========================
-
 #     chart_col1, chart_col2 = st.columns(2)
-
-#     # =========================
-#     # RISK DISTRIBUTION PIE CHART
-#     # =========================
 
 #     with chart_col1:
 
@@ -530,10 +443,6 @@
 #             use_container_width=True
 #         )
 
-#     # =========================
-#     # FRAUD PROBABILITY HISTOGRAM
-#     # =========================
-
 #     with chart_col2:
 
 #         fraud_hist = px.histogram(
@@ -546,10 +455,6 @@
 #             fraud_hist,
 #             use_container_width=True
 #         )
-
-#     # =========================
-#     # HIGH RISK TABLE
-#     # =========================
 
 #     st.subheader("High Risk Investigation Queue")
 
@@ -572,7 +477,7 @@
 
 #     alerts_df = pd.DataFrame({
 #         'Transaction_ID': np.arange(1001,1011),
-#         'Fraud_Probability': np.random.uniform(0.5,1.0,10),
+#         'Fraud_Probability': np.random.uniform(0.1,1.0,10),
 #         'Risk_Level': np.random.choice(
 #             ['Medium Risk', 'High Risk'],
 #             10
@@ -661,15 +566,15 @@ threshold = st.sidebar.slider(
     "Fraud Threshold",
     0.0,
     1.0,
-    0.10
+    0.15
 )
 
 st.sidebar.markdown("---")
 
 st.sidebar.write("### Risk Rules")
-st.sidebar.write("- Low Risk : 0% - 10%")
-st.sidebar.write("- Medium Risk : 10% - 20%")
-st.sidebar.write("- High Risk : > 20%")
+st.sidebar.write("- Low Risk : 0% - 15%")
+st.sidebar.write("- Medium Risk : 15% - 30%")
+st.sidebar.write("- High Risk : > 30%")
 
 # =========================
 # TABS
@@ -889,16 +794,16 @@ with prediction_tab:
         )[0][1]
 
         # =========================
-        # RISK LEVEL
+        # RISK LEVEL LOGIC
         # =========================
 
-        if fraud_probability > 0.20:
+        if fraud_probability > 0.30:
 
             risk_level = "High Risk"
             monitoring_action = "Block Transaction"
             alert_message = "Immediate Investigation Required"
 
-        elif fraud_probability >= 0.10:
+        elif fraud_probability >= 0.15:
 
             risk_level = "Medium Risk"
             monitoring_action = "Send OTP Verification"
@@ -981,9 +886,9 @@ with prediction_tab:
             gauge={
                 'axis': {'range': [0,100]},
                 'steps': [
-                    {'range': [0,10], 'color': "lightgreen"},
-                    {'range': [10,20], 'color': "yellow"},
-                    {'range': [20,100], 'color': "red"}
+                    {'range': [0,15], 'color': "lightgreen"},
+                    {'range': [15,30], 'color': "yellow"},
+                    {'range': [30,100], 'color': "red"}
                 ]
             }
         ))
@@ -1004,7 +909,7 @@ with dashboard_tab:
         'Risk_Level': np.random.choice(
             ['Low Risk', 'Medium Risk', 'High Risk'],
             200,
-            p=[0.5,0.2,0.3]
+            p=[0.6,0.25,0.15]
         ),
         'Fraud_Probability': np.random.uniform(0,1,200),
         'Transaction_Amount': np.random.randint(100,50000,200)
@@ -1087,7 +992,7 @@ with alerts_tab:
 
     alerts_df = pd.DataFrame({
         'Transaction_ID': np.arange(1001,1011),
-        'Fraud_Probability': np.random.uniform(0.1,1.0,10),
+        'Fraud_Probability': np.random.uniform(0.15,1.0,10),
         'Risk_Level': np.random.choice(
             ['Medium Risk', 'High Risk'],
             10
@@ -1125,4 +1030,3 @@ st.markdown("---")
 st.caption(
     "Banking Fraud Detection System | Machine Learning + Fraud Intelligence + Monitoring Dashboard"
 )
-
